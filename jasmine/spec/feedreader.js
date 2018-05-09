@@ -10,24 +10,7 @@
  */
 
  /**
- TODO: 
- 写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个测试应该包含两个 expectation ： 当点击图标的时候菜单是否显示，再次点击的时候是否隐藏。
- TODO: 
- 写一个叫做 "Initial Entries" 的测试用例
- TODO: 
- 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素里面至少有一个 .entry 的元素。
- TODO: 
- 写一个叫做 "New Feed Selection" 的测试用例
- TODO: 
- 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
- TODO: 
- 每个测试都不应该依赖别的测试的结果。
- TODO: 
- 回调函数应该用来保证在测试运行之前源已经被加载。
- TODO: 
- 实现未定义变量和数组越界的错误处理。
- TODO: 
- 当完成所有任务的时候，所有的测试也应该通过。
+
  TODO: 
  写一个 README 文件来详细说明运行应用的步骤。如果你已经添加了额外的测试（来提高测试覆盖率），请提供文档说明这些未来的功能点是什么和你编写的测试在检查什么。
  * 
@@ -120,19 +103,52 @@ $(function() {
          });
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
-
-        /* TODO: Write a test that ensures when the loadFeed
+    /* A new test suite named "Initial Entries" */
+    describe('Initial Entries', function(){
+        beforeEach(function(done){
+            loadFeed(1, done);
+        });
+        /* A test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+        it('should have at least an feed entry',function(done){
+            expect($('.feed').children.length).toBeGreaterThan(0);
+            // TODO: why is the done() below is needed?
+            done();
+        });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    });
 
-        /* TODO: Write a test that ensures when a new feed is loaded
+        
+
+    /* A new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function(){
+
+        /* A test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        var firstContent,
+            secondContent;
+        beforeEach(function(done){
+            loadFeed(0,function(){
+                firstContent = $('.feed a:first article').html();
+                loadFeed(1,function(){
+                    secondContent = $('.feed a:first article').html();
+                    done();
+                });
+            });
+        });
+        
+        it('changes when a new feed is loaded',function(done){
+            expect(firstContent).not.toBe(secondContent);
+            done();
+        });
+
+    });
+
+        
 }());
