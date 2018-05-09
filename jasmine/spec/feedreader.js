@@ -10,11 +10,6 @@
  */
 
  /**
- 
- TODO: 
- 写一个叫做 "The menu" 的测试用例
- TODO: 
- 写一个测试用例保证菜单元素默认是隐藏的。你需要分析 html 和 css 来搞清楚我们是怎么实现隐藏/展示菜单元素的。
  TODO: 
  写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个测试应该包含两个 expectation ： 当点击图标的时候菜单是否显示，再次点击的时候是否隐藏。
  TODO: 
@@ -94,20 +89,35 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
-        var body;
+        var body,
+            menuIcon;
         beforeEach(function () {
-            body = $('body')[0];
+            body = $('body');
+            menuIcon = $('.menu-icon-link');
         });
 
         it('should be hidden by default',function(){
-            expect(body.className).toBe('menu-hidden');
+            expect(body.hasClass('menu-hidden')).toBeTruthy();
         });
 
-         /* TODO: Write a test that ensures the menu changes
+         /* A test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
+          * have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+         it('should appear when the menu icon is clicked',function(){
+            menuIcon.trigger('click');
+            expect(body.hasClass('menu-hidden')).toBeFalsy();
+
+            // to initialize the initial state of menu
+            body.toggleClass('menu-hidden');
+         });
+
+         it('should be hidden when the menu icon is clicked again',function(){
+            menuIcon.trigger('click');
+            menuIcon.trigger('click');
+            expect(body.hasClass('menu-hidden')).toBeTruthy();
+         });
     });
 
     /* TODO: Write a new test suite named "Initial Entries" */
